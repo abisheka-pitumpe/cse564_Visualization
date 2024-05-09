@@ -100,7 +100,11 @@ def update_bar_chart_by_region():
     filtered_data = df[df['Region'] == selected_region][['Country', 'Region', 'Ladder score','Economy','Social support','Health','Freedom','Trust','Generosity']]
     return jsonify(filtered_data.to_dict(orient='records'))
 
-
+@app.route("/update_bar_chart_by_country", methods=["GET"])
+def update_bar_chart_by_country():
+    selected_country = request.args.get("country")
+    filtered_data = df[df['Country'] == selected_country][['Country', 'Region', 'Ladder score','Economy','Social support','Health','Freedom','Trust','Generosity']]
+    return jsonify(filtered_data.to_dict(orient='records'))
 
 @app.route('/update_pcpdata/<region>', methods=['GET'])
 def update_data(region):

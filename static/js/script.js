@@ -367,6 +367,7 @@ function initializeMap() {
         updatePolylineWithCountry(selectedCountry,data)
         updateGauge(selectedCountry)
         updateBubbleByCountry(selectedCountry,data)
+        updateBarChartByCountry(selectedCountry)
 
       })
       .catch(error => {
@@ -1534,6 +1535,19 @@ function updateBarChartByRegion(selectedRegion){
     .catch(error => console.error('Failed to fetch bar chart data by region:', error));
 }
 
+function updateBarChartByCountry(selectedCountry){
+  const url = `/update_bar_chart_by_country?country=${selectedCountry}&attribute=${selectedAttribute}`;
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if(data.length > 0) {
+        drawBarChart(data);
+      } else {
+        console.error('No data returned for this country:', selectedCountry);
+      }
+    })
+    .catch(error => console.error('Failed to fetch bar chart data by country:', error));
+}
 
 d3.json("/get_linedata", function(data) {
   var margin = { top: 20, right: 20, bottom: 50, left: 50 },
@@ -1666,24 +1680,4 @@ d3.select("#country").on("change", function() {
   // Add the Y Axis
   svg.append("g")
       .call(d3.axisLeft(y));
-
-  // // Add legend
-  // var legend = svg.selectAll(".legend")
-  //     .data(regions)
-  //     .enter().append("g")
-  //     .attr("class", "legend")
-  //     .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-  // legend.append("rect")
-  //     .attr("x", width - 18)
-  //     .attr("width", 18)
-  //     .attr("height", 18)
-  //     .style("fill", function(region) { return color(region); });
-
-  // legend.append("text")
-  //     .attr("x", width - 24)
-  //     .attr("y", 9)
-  //     .attr("dy", ".35em")
-  //     .style("text-anchor", "end")
-  //     .text(function(d) { return d; });
 });
