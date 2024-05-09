@@ -378,6 +378,7 @@ document.getElementById("region").addEventListener("change", function () {
   updateRegion(selectedRegion,countryData,projection, continentData);
   updatePolylinewithRegions(selectedRegion,data)
   updateBubbleByRegion(selectedRegion,data)
+  updateBarChartByRegion(selectedRegion)
 });
 
 document.getElementById("year").addEventListener("change", function () {
@@ -1425,7 +1426,9 @@ function updateBarChart() {
     })
     .catch(error => console.error('Failed to fetch bar chart data:', error));
 }
+function updateBarChartByRegion(selectedRegion){
 
+}
 
 // Function to draw the bar chart with given data and attribute
 function drawBarChart(data) {
@@ -1516,6 +1519,20 @@ document.querySelectorAll('.legend-item').forEach(item => {
 
 // Initial chart update
 updateBarChart();
+
+function updateBarChartByRegion(selectedRegion){
+  const url = `/update_bar_chart_by_region?region=${selectedRegion}&attribute=${selectedAttribute}`;
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if(data.length > 0) {
+        drawBarChart(data);
+      } else {
+        console.error('No data returned for this region:', selectedRegion);
+      }
+    })
+    .catch(error => console.error('Failed to fetch bar chart data by region:', error));
+}
 
 
 d3.json("/get_linedata", function(data) {

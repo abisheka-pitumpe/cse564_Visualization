@@ -91,9 +91,16 @@ def pcp_data():
 @app.route('/bar_chart_data', methods=['GET'])
 def get_bar_chart_data():
     year = request.args.get('year', default=2024, type=int)
-    print("Requested year:", year)  # This will show in your Flask server console
     filtered_data = df[df['Year'] == year][['Country', 'Region', 'Ladder score','Economy','Social support','Health','Freedom','Trust','Generosity']]
     return jsonify(filtered_data.to_dict(orient='records'))
+
+@app.route("/update_bar_chart_by_region", methods=["GET"])
+def update_bar_chart_by_region():
+    selected_region = request.args.get("region")
+    filtered_data = df[df['Region'] == selected_region][['Country', 'Region', 'Ladder score','Economy','Social support','Health','Freedom','Trust','Generosity']]
+    return jsonify(filtered_data.to_dict(orient='records'))
+
+
 
 @app.route('/update_pcpdata/<region>', methods=['GET'])
 def update_data(region):
