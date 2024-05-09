@@ -1471,16 +1471,22 @@ function drawBarChart(data) {
     .attr("height", y.bandwidth())
     .attr("fill", d => regionColors[d.Region]); // Use regionColors object for fill
 
-  // Add the X axis
-  g.append("g")
+    const xAxis = g.append("g")
     .attr("transform", `translate(0,${height})`)
     .call(d3.axisBottom(x));
+
+  // Add the X axis label
+  xAxis.append("text")
+    .attr("class", "axis-label")
+    .attr("x", width / 2)
+    .attr("y", 40)
+    .style("text-anchor", "middle")
+    .text("Metric Score"); 
 
   // Add the Y axis
   g.append("g")
     .call(d3.axisLeft(y));
 }
-
 
 // Ensure this function gets called initially and on each update
 updateBarChart();
